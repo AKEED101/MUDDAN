@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ProfileStackParamList } from '../navigation/types';
+import { ConsultantStackParamList } from '../navigation/types';
+import { supabase } from '../services/supabase';
 
-type MyConsultationsScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'MyConsultationsScreen'>;
+type MyConsultationsScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'MyConsultations'>;
 
 const MyConsultationsScreen = () => {
   const navigation = useNavigation<MyConsultationsScreenNavigationProp>();
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const { data: userRes } = await supabase.auth.getUser();
+      const userId = userRes.user?.id;
+      if (!userId) { setItems([]); setLoading(false); return; }
+      const { data } = await supabase
+        .from('booking_requests')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      setItems(data || []);
+      setLoading(false);
+    })();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -25,7 +43,31 @@ const MyConsultationsScreen = () => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.consultationsCard}>
           <Text style={styles.consultationsTitle}>My Consultations</Text>
-          <Text style={styles.consultationsContent}>Consultations history coming soon!</Text>
+          {loading ? (
+            <Text style={styles.consultationsContent}>Loading…</Text>
+          ) : items.length === 0 ? (
+            <Text style={styles.consultationsContent}>No consultations yet.</Text>
+          ) : (
+            items.map((bk) => (
+              <View key={bk.id} style={styles.itemRow}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.itemTitle}>{(bk.consultation_type || '').toUpperCase()} • {bk.date_iso} {bk.slot}</Text>
+                  <Text style={styles.itemSub}>Consultant: {bk.consultant_code} • ${bk.amount} • {bk.payment_method}</Text>
+                </View>
+                <View style={styles.actionsRow}>
+                  <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Chat', { consultationId: bk.id })}>
+                    <Ionicons name="chatbubble" size={16} color="#7C3AED" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('AudioCall', { consultationId: bk.id })}>
+                    <Ionicons name="mic" size={16} color="#7C3AED" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('VideoCall', { consultationId: bk.id })}>
+                    <Ionicons name="videocam" size={16} color="#7C3AED" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -81,6 +123,18 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     lineHeight: 24,
   },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  itemTitle: { color: '#111827', fontWeight: '700' },
+  itemSub: { color: '#6B7280', marginTop: 2 },
+  actionsRow: { flexDirection: 'row', gap: 8 },
+  actionBtn: { backgroundColor: '#F3E8FF', padding: 8, borderRadius: 8 },
 });
 
 export default MyConsultationsScreen;

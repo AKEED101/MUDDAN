@@ -11,6 +11,7 @@ import VideoCallScreen from '../screens/VideoCallScreen';
 import PrescriptionScreen from '../screens/PrescriptionScreen';
 import PaymentScreen from '../screens/PaymentScreen';
 import BookingConfirmationScreen from '../screens/BookingConfirmationScreen';
+import MyConsultationsScreen from '../screens/MyConsultationsScreen';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,7 @@ const ConsultantsStack = () => {
       <Stack.Screen name="VideoCall" component={VideoCallScreen} />
       <Stack.Screen name="Prescription" component={PrescriptionScreen} />
       <Stack.Screen name="Payment" component={PaymentScreen} />
+      <Stack.Screen name="MyConsultations" component={MyConsultationsScreen} />
     </Stack.Navigator>
   );
 };

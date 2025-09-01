@@ -343,6 +343,18 @@ const ConsultantsScreen = () => {
                 <Text style={styles.quickActionText}>Chat Support</Text>
               </LinearGradient>
             </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.quickActionCard}
+              onPress={() => navigation.navigate('MyConsultations')}
+            >
+              <LinearGradient
+                colors={['#7C3AED', '#4F46E5']}
+                style={styles.quickActionGradient}
+              >
+                <Ionicons name="time" size={24} color="white" />
+                <Text style={styles.quickActionText}>My Consultations</Text>
+              </LinearGradient>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
