@@ -7,13 +7,13 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ConsultantStackParamList } from '../navigation/types';
 
-type AudioCallScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'AudioCallScreen'>;
-type AudioCallScreenRouteProp = RouteProp<ConsultantStackParamList, 'AudioCallScreen'>;
+type AudioCallScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'AudioCall'>;
+type AudioCallScreenRouteProp = RouteProp<ConsultantStackParamList, 'AudioCall'>;
 
 const AudioCallScreen = () => {
   const navigation = useNavigation<AudioCallScreenNavigationProp>();
   const route = useRoute<AudioCallScreenRouteProp>();
-  const { doctorId } = route.params;
+  const { consultationId } = route.params;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,8 +27,19 @@ const AudioCallScreen = () => {
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.callCard}>
-          <Text style={styles.callTitle}>Audio Call with Doctor {doctorId}</Text>
-          <Text style={styles.callContent}>Audio call functionality coming soon!</Text>
+          <Text style={styles.callTitle}>Audio Call • Session {consultationId}</Text>
+          <Text style={styles.timer}>00:00</Text>
+          <View style={styles.controls}>
+            <TouchableOpacity style={styles.ctrlBtn}>
+              <Ionicons name="mic-off" size={22} color="#111827" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.ctrlBtn}>
+              <Ionicons name="volume-high" size={22} color="#111827" />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.ctrlBtn, styles.endBtn]}>
+              <Ionicons name="call" size={22} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -79,11 +90,17 @@ const styles = StyleSheet.create({
     color: '#1E293B',
     marginBottom: 16,
   },
-  callContent: {
-    fontSize: 16,
-    color: '#6B7280',
-    lineHeight: 24,
+  timer: { fontSize: 16, color: '#6B7280', marginBottom: 16 },
+  controls: { flexDirection: 'row', gap: 12, justifyContent: 'center' },
+  ctrlBtn: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F3F4F6',
   },
+  endBtn: { backgroundColor: '#EF4444' },
 });
 
 export default AudioCallScreen;

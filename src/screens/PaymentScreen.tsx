@@ -7,13 +7,13 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ConsultantStackParamList } from '../navigation/types';
 
-type PaymentScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'PaymentScreen'>;
-type PaymentScreenRouteProp = RouteProp<ConsultantStackParamList, 'PaymentScreen'>;
+type PaymentScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'Payment'>;
+type PaymentScreenRouteProp = RouteProp<ConsultantStackParamList, 'Payment'>;
 
 const PaymentScreen = () => {
   const navigation = useNavigation<PaymentScreenNavigationProp>();
   const route = useRoute<PaymentScreenRouteProp>();
-  const { doctorId } = route.params;
+  const { consultationId } = route.params;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,7 +27,7 @@ const PaymentScreen = () => {
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.paymentCard}>
-          <Text style={styles.paymentTitle}>Payment for Doctor {doctorId}</Text>
+          <Text style={styles.paymentTitle}>Payment for Session {consultationId}</Text>
           <Text style={styles.paymentContent}>Payment functionality coming soon!</Text>
         </View>
       </ScrollView>

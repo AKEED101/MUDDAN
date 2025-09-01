@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -28,9 +28,19 @@ const ChatScreen = () => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.chatCard}>
           <Text style={styles.chatTitle}>Chat Session {consultationId}</Text>
-          <Text style={styles.chatContent}>Chat functionality coming soon!</Text>
+          <Text style={styles.chatContent}>Attach files and send messages.</Text>
         </View>
       </ScrollView>
+
+      <View style={styles.composer}>
+        <TouchableOpacity style={styles.attachBtn}>
+          <Ionicons name="attach" size={20} color="#6B7280" />
+        </TouchableOpacity>
+        <TextInput placeholder="Type a message" placeholderTextColor="#9CA3AF" style={styles.input} />
+        <TouchableOpacity style={styles.sendBtn}>
+          <Ionicons name="send" size={20} color="white" />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -83,6 +93,37 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6B7280',
     lineHeight: 24,
+  },
+  composer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    gap: 8,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
+  },
+  attachBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F3F4F6',
+  },
+  input: {
+    flex: 1,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    color: '#111827',
+  },
+  sendBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+    backgroundColor: '#7C3AED',
   },
 });
 

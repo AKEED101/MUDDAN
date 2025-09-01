@@ -163,7 +163,7 @@ const ConsultantsScreen = () => {
     <TouchableOpacity
       key={consultant.id}
       style={styles.consultantCard}
-      onPress={() => navigation.navigate('DoctorProfile', { doctorId: consultant.id })}
+      onPress={() => navigation.navigate('ConsultantProfile', { consultantId: consultant.id })}
     >
       <Image source={{ uri: consultant.image }} style={styles.consultantImage} />
       <View style={styles.consultantInfo}>

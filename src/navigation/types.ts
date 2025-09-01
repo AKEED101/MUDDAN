@@ -38,6 +38,15 @@ export type ConsultantStackParamList = {
   ConsultantProfile: { consultantId: string };
   DoctorProfile: { doctorId: string };
   Booking: { consultantId: string };
+  BookingConfirmation: {
+    bookingId: string;
+    consultantId: string;
+    mode: 'chat' | 'audio' | 'video';
+    date: string;
+    slot: string;
+    amount: number;
+    paymentMethod: 'card' | 'wallet' | 'cash';
+  };
   Consultation: { consultationId: string };
   VideoCall: { consultationId: string };
   AudioCall: { consultationId: string };

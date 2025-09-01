@@ -7,13 +7,13 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ConsultantStackParamList } from '../navigation/types';
 
-type ConsultationScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'ConsultationScreen'>;
-type ConsultationScreenRouteProp = RouteProp<ConsultantStackParamList, 'ConsultationScreen'>;
+type ConsultationScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'Consultation'>;
+type ConsultationScreenRouteProp = RouteProp<ConsultantStackParamList, 'Consultation'>;
 
 const ConsultationScreen = () => {
   const navigation = useNavigation<ConsultationScreenNavigationProp>();
   const route = useRoute<ConsultationScreenRouteProp>();
-  const { doctorId } = route.params;
+  const { consultationId } = route.params;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,8 +27,8 @@ const ConsultationScreen = () => {
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.consultationCard}>
-          <Text style={styles.consultationTitle}>Consultation with Doctor {doctorId}</Text>
-          <Text style={styles.consultationContent}>Consultation details coming soon!</Text>
+          <Text style={styles.consultationTitle}>Consultation • Session {consultationId}</Text>
+          <Text style={styles.consultationContent}>Details of the consultation will appear here.</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

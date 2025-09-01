@@ -104,7 +104,7 @@ const ConsultantProfileScreen: React.FC<{ navigation: any; route: any }> = ({
   };
 
   const handleBookConsultation = () => {
-    navigation.navigate('BookingMode', { consultant: consultantProfile });
+    navigation.navigate('Booking', { consultantId: String(consultantProfile.id) });
   };
 
   const handleSave = () => {

@@ -7,13 +7,13 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ConsultantStackParamList } from '../navigation/types';
 
-type VideoCallScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'VideoCallScreen'>;
-type VideoCallScreenRouteProp = RouteProp<ConsultantStackParamList, 'VideoCallScreen'>;
+type VideoCallScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'VideoCall'>;
+type VideoCallScreenRouteProp = RouteProp<ConsultantStackParamList, 'VideoCall'>;
 
 const VideoCallScreen = () => {
   const navigation = useNavigation<VideoCallScreenNavigationProp>();
   const route = useRoute<VideoCallScreenRouteProp>();
-  const { doctorId } = route.params;
+  const { consultationId } = route.params;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,8 +27,8 @@ const VideoCallScreen = () => {
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.callCard}>
-          <Text style={styles.callTitle}>Video Call with Doctor {doctorId}</Text>
-          <Text style={styles.callContent}>Video call functionality coming soon!</Text>
+          <Text style={styles.callTitle}>Video Call • Session {consultationId}</Text>
+          <Text style={styles.callContent}>Camera preview and controls will appear here.</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
