@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ConsultantStackParamList } from '../navigation/types';
+import { supabase } from '../services/supabase';
 
 type PaymentScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'Payment'>;
 type PaymentScreenRouteProp = RouteProp<ConsultantStackParamList, 'Payment'>;
@@ -14,6 +15,15 @@ const PaymentScreen = () => {
   const navigation = useNavigation<PaymentScreenNavigationProp>();
   const route = useRoute<PaymentScreenRouteProp>();
   const { consultationId } = route.params;
+  const [method, setMethod] = useState<'stripe' | 'mobile_money'>('stripe');
+  const [processing, setProcessing] = useState(false);
+
+  const confirmPayment = async () => {
+    setProcessing(true);
+    await supabase.from('booking_requests').update({ payment_method: method === 'stripe' ? 'card' : 'wallet', payment_ref: 'TEST-OK', status: 'confirmed' }).eq('id', consultationId);
+    setProcessing(false);
+    navigation.goBack();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,7 +38,18 @@ const PaymentScreen = () => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.paymentCard}>
           <Text style={styles.paymentTitle}>Payment for Session {consultationId}</Text>
-          <Text style={styles.paymentContent}>Payment functionality coming soon!</Text>
+          <Text style={styles.paymentContent}>Choose a method</Text>
+          <View style={styles.methodsRow}>
+            <TouchableOpacity style={[styles.methodChip, method === 'stripe' && styles.methodChipActive]} onPress={() => setMethod('stripe')}>
+              <Text style={[styles.methodText, method === 'stripe' && styles.methodTextActive]}>Stripe</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.methodChip, method === 'mobile_money' && styles.methodChipActive]} onPress={() => setMethod('mobile_money')}>
+              <Text style={[styles.methodText, method === 'mobile_money' && styles.methodTextActive]}>Mobile Money</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={[styles.payBtn, processing && { opacity: 0.5 }]} disabled={processing} onPress={confirmPayment}>
+            <Text style={styles.payText}>{processing ? 'Processing…' : 'Confirm Payment'}</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -84,6 +105,13 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     lineHeight: 24,
   },
+  methodsRow: { flexDirection: 'row', gap: 12, marginTop: 12 },
+  methodChip: { backgroundColor: '#F3F4F6', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 12 },
+  methodChipActive: { backgroundColor: '#7C3AED' },
+  methodText: { color: '#374151', fontWeight: '700' },
+  methodTextActive: { color: 'white' },
+  payBtn: { backgroundColor: '#7C3AED', padding: 14, borderRadius: 12, alignItems: 'center', marginTop: 16 },
+  payText: { color: 'white', fontWeight: '700' },
 });
 
 export default PaymentScreen;

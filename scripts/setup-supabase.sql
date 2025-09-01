@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   email TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
   phone TEXT,
+  language TEXT DEFAULT 'en',
   avatar_url TEXT,
   date_of_birth DATE,
   role TEXT DEFAULT 'user' CHECK (role IN ('user', 'professional', 'admin')),

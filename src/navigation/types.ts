@@ -18,6 +18,16 @@ export type HomeStackParamList = {
   CycleHistory: undefined;
 };
 
+export type CycleStackParamList = {
+  CycleHomeScreen: undefined;
+  CalendarScreen: undefined;
+  InsightsScreen: undefined;
+  CycleTrackerScreen: undefined;
+  CycleNotesScreen: undefined;
+  CycleRecordsScreen: undefined;
+  LogPeriodScreen: undefined;
+};
+
 export type CommunityStackParamList = {
   CommunityMain: undefined;
   CreatePost: undefined;

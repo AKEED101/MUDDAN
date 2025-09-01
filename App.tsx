@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import RootNavigator from './src/navigation/RootNavigator';
 import AuthStack from './src/navigation/AuthStack';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
+import { I18nProvider } from './src/i18n';
 
 const AppContent = () => {
   const { user, loading, needsOnboarding } = useAuth();
@@ -19,9 +20,11 @@ const AppContent = () => {
 export default function App() {
   return (
     <SafeAreaProvider style={{ flex: 1 }}>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
+      <I18nProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </I18nProvider>
     </SafeAreaProvider>
   );
 }

@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ConsultantStackParamList } from '../navigation/types';
 import { MockConsultant } from '../types';
+import { useI18n } from '../i18n';
 
 const { width } = Dimensions.get('window');
 
@@ -23,6 +24,7 @@ type ConsultantsScreenNavigationProp = NativeStackNavigationProp<ConsultantStack
 
 const ConsultantsScreen = () => {
   const navigation = useNavigation<ConsultantsScreenNavigationProp>();
+  const { t } = useI18n();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -267,7 +269,7 @@ const ConsultantsScreen = () => {
         >
           <View style={styles.headerContent}>
             <View style={styles.headerTextContainer}>
-              <Text style={styles.headerTitle}>Consultants</Text>
+              <Text style={styles.headerTitle}>{t('consultants')}</Text>
               <Text style={styles.headerSubtitle}>Expert healthcare professionals</Text>
             </View>
             <TouchableOpacity style={styles.filterButton}>
@@ -328,7 +330,7 @@ const ConsultantsScreen = () => {
                 style={styles.quickActionGradient}
               >
                 <Ionicons name="calendar" size={24} color="white" />
-                <Text style={styles.quickActionText}>Book Appointment</Text>
+                <Text style={styles.quickActionText}>{t('bookAppointment')}</Text>
               </LinearGradient>
             </TouchableOpacity>
             <TouchableOpacity 
@@ -340,7 +342,7 @@ const ConsultantsScreen = () => {
                 style={styles.quickActionGradient}
               >
                 <Ionicons name="chatbubble" size={24} color="white" />
-                <Text style={styles.quickActionText}>Chat Support</Text>
+                <Text style={styles.quickActionText}>{t('chatSupport')}</Text>
               </LinearGradient>
             </TouchableOpacity>
             <TouchableOpacity 
@@ -352,7 +354,7 @@ const ConsultantsScreen = () => {
                 style={styles.quickActionGradient}
               >
                 <Ionicons name="time" size={24} color="white" />
-                <Text style={styles.quickActionText}>My Consultations</Text>
+                <Text style={styles.quickActionText}>{t('myConsultations')}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
