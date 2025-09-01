@@ -4,17 +4,35 @@ import { supabase } from '../services/supabase';
 type Lang = 'en' | 'so';
 
 const en = {
+  home: 'Home',
+  community: 'Community',
+  consultant: 'Consultant',
+  profile: 'Profile',
+  settings: 'Settings',
+  language: 'Language',
   consultants: 'Consultants',
+  expertPros: 'Expert healthcare professionals',
   bookAppointment: 'Book Appointment',
   chatSupport: 'Chat Support',
   myConsultations: 'My Consultations',
+  chooseMethod: 'Choose a method',
+  confirmPayment: 'Confirm Payment',
 };
 
 const so = {
+  home: 'Bogga Hore',
+  community: 'Bulshada',
+  consultant: 'La-taliye',
+  profile: 'Profile',
+  settings: 'Dejinta',
+  language: 'Luuqad',
   consultants: 'La-taliyayaal',
-  bookAppointment: 'Ballan Qaado',
-  chatSupport: 'Soo Dhaweynta Chat',
+  expertPros: 'Khabiirro caafimaad oo khibrad leh',
+  bookAppointment: 'Ballan samee',
+  chatSupport: 'Taageero wada sheekeysi',
   myConsultations: 'La-tashiyadayda',
+  chooseMethod: 'Dooro hab',
+  confirmPayment: 'Xaqiiji bixinta',
 };
 
 const dict: Record<Lang, Record<string, string>> = { en, so };

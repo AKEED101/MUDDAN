@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ConsultantStackParamList } from '../navigation/types';
+import { useI18n } from '../i18n';
 import { supabase } from '../services/supabase';
 
 type PaymentScreenNavigationProp = NativeStackNavigationProp<ConsultantStackParamList, 'Payment'>;
@@ -17,6 +18,7 @@ const PaymentScreen = () => {
   const { consultationId } = route.params;
   const [method, setMethod] = useState<'stripe' | 'mobile_money'>('stripe');
   const [processing, setProcessing] = useState(false);
+  const { t } = useI18n();
 
   const confirmPayment = async () => {
     setProcessing(true);
@@ -38,7 +40,7 @@ const PaymentScreen = () => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.paymentCard}>
           <Text style={styles.paymentTitle}>Payment for Session {consultationId}</Text>
-          <Text style={styles.paymentContent}>Choose a method</Text>
+          <Text style={styles.paymentContent}>{t('chooseMethod')}</Text>
           <View style={styles.methodsRow}>
             <TouchableOpacity style={[styles.methodChip, method === 'stripe' && styles.methodChipActive]} onPress={() => setMethod('stripe')}>
               <Text style={[styles.methodText, method === 'stripe' && styles.methodTextActive]}>Stripe</Text>
@@ -48,7 +50,7 @@ const PaymentScreen = () => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={[styles.payBtn, processing && { opacity: 0.5 }]} disabled={processing} onPress={confirmPayment}>
-            <Text style={styles.payText}>{processing ? 'Processing…' : 'Confirm Payment'}</Text>
+            <Text style={styles.payText}>{processing ? 'Processing…' : t('confirmPayment')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

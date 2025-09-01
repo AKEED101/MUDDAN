@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { RootTabParamList } from './types';
+import { useI18n } from '../i18n';
 
 // Import navigators
 import HomeNavigator from './HomeNavigator';
@@ -12,6 +13,7 @@ import ProfileNavigator from './ProfileNavigator';
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
 const RootNavigator = () => {
+  const { t } = useI18n();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -49,34 +51,10 @@ const RootNavigator = () => {
         },
       })}
     >
-      <Tab.Screen 
-        name="Home" 
-        component={HomeNavigator}
-        options={{
-          title: 'Home',
-        }}
-      />
-      <Tab.Screen 
-        name="Community" 
-        component={CommunityNavigator}
-        options={{
-          title: 'Community',
-        }}
-      />
-      <Tab.Screen 
-        name="Consultant" 
-        component={ConsultantNavigator}
-        options={{
-          title: 'Consultant',
-        }}
-      />
-      <Tab.Screen 
-        name="Profile" 
-        component={ProfileNavigator}
-        options={{
-          title: 'Profile',
-        }}
-      />
+      <Tab.Screen name="Home" component={HomeNavigator} options={{ title: t('home') }} />
+      <Tab.Screen name="Community" component={CommunityNavigator} options={{ title: t('community') }} />
+      <Tab.Screen name="Consultant" component={ConsultantNavigator} options={{ title: t('consultant') }} />
+      <Tab.Screen name="Profile" component={ProfileNavigator} options={{ title: t('profile') }} />
     </Tab.Navigator>
   );
 };

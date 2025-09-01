@@ -270,7 +270,7 @@ const ConsultantsScreen = () => {
           <View style={styles.headerContent}>
             <View style={styles.headerTextContainer}>
               <Text style={styles.headerTitle}>{t('consultants')}</Text>
-              <Text style={styles.headerSubtitle}>Expert healthcare professionals</Text>
+              <Text style={styles.headerSubtitle}>{t('expertPros')}</Text>
             </View>
             <TouchableOpacity style={styles.filterButton}>
               <LinearGradient
