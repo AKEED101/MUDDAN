@@ -199,6 +199,20 @@ CREATE TABLE IF NOT EXISTS bookings (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Lightweight booking_requests table for app-driven requests (no strict FKs)
+CREATE TABLE IF NOT EXISTS booking_requests (
+  id TEXT PRIMARY KEY,
+  user_id UUID REFERENCES user_profiles(id) ON DELETE SET NULL,
+  consultant_code TEXT,
+  consultation_type TEXT CHECK (consultation_type IN ('chat','audio','video')),
+  date_iso TEXT,
+  slot TEXT,
+  amount DECIMAL(10,2),
+  payment_method TEXT CHECK (payment_method IN ('card','wallet','cash')),
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending','confirmed','cancelled')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Reviews table
 CREATE TABLE IF NOT EXISTS reviews (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -280,6 +294,7 @@ ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE post_likes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE professional_availability ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE booking_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_settings ENABLE ROW LEVEL SECURITY;
@@ -337,6 +352,13 @@ CREATE POLICY "Users can view own bookings" ON bookings
   ));
 
 CREATE POLICY "Users can create bookings" ON bookings
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- booking_requests policies
+CREATE POLICY "Users can view own booking requests" ON booking_requests
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can create booking requests" ON booking_requests
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- =====================================================

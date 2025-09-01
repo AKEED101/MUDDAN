@@ -18,14 +18,18 @@ const BookingConfirmationScreen = () => {
 
   const persistBooking = async () => {
     try {
-      await supabase.from('bookings').insert({
+      const { data: userRes } = await supabase.auth.getUser();
+      const userId = userRes.user?.id || null;
+      await supabase.from('booking_requests').insert({
         id: bookingId,
-        consultant_id: consultantId,
-        mode,
-        date,
+        user_id: userId,
+        consultant_code: consultantId,
+        consultation_type: mode,
+        date_iso: date,
         slot,
         amount,
         payment_method: paymentMethod,
+        status: 'pending',
       });
     } catch {}
   };
