@@ -64,6 +64,15 @@ const en = {
   heavy: 'Heavy',
   symptoms: 'Symptoms',
   additionalNotes: 'Additional Notes',
+  community: 'Community',
+  connectWomen: 'Connect with other women',
+  popularGroups: 'Popular Groups',
+  seeAll: 'See All',
+  recentPosts: 'Recent Posts',
+  createPost: 'Create Post',
+  createNewPost: 'Create New Post',
+  viewGroup: 'View Group',
+  joinGroup: 'Join Group',
 };
 
 const so = {
@@ -127,6 +136,15 @@ const so = {
   heavy: 'Culus',
   symptoms: 'Calaamado',
   additionalNotes: 'Qoraallo dheeraad ah',
+  community: 'Bulshada',
+  connectWomen: 'Ku xidhxo dumarka kale',
+  popularGroups: 'Kooxo caan ah',
+  seeAll: 'Dhammaan eeg',
+  recentPosts: 'Qoraallo dhawaan',
+  createPost: 'Qor qoraal',
+  createNewPost: 'Qor qoraal cusub',
+  viewGroup: 'Eeg kooxda',
+  joinGroup: 'Ku biir kooxda',
 };
 
 const dict: Record<Lang, Record<string, string>> = { en, so };

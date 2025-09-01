@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CommunityStackParamList } from '../navigation/types';
 import { MockPost } from '../types';
+import { useI18n } from '../i18n';
 
 const { width } = Dimensions.get('window');
 
@@ -23,6 +24,7 @@ type CommunityScreenNavigationProp = NativeStackNavigationProp<CommunityStackPar
 
 const CommunityScreen = () => {
   const navigation = useNavigation<CommunityScreenNavigationProp>();
+  const { t } = useI18n();
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   // Mock data for community groups
@@ -190,7 +192,7 @@ const CommunityScreen = () => {
             styles.joinButtonText,
             group.isJoined && styles.joinedButtonText
           ]}>
-            {group.isJoined ? 'View Group' : 'Join Group'}
+            {group.isJoined ? t('viewGroup') : t('joinGroup')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -256,8 +258,8 @@ const CommunityScreen = () => {
         >
           <View style={styles.headerContent}>
             <View style={styles.headerTextContainer}>
-              <Text style={styles.headerTitle}>Community</Text>
-              <Text style={styles.headerSubtitle}>Connect with other women</Text>
+              <Text style={styles.headerTitle}>{t('community')}</Text>
+              <Text style={styles.headerSubtitle}>{t('connectWomen')}</Text>
             </View>
             <TouchableOpacity style={styles.searchButton}>
               <LinearGradient
@@ -280,9 +282,9 @@ const CommunityScreen = () => {
         {/* Popular Groups */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Popular Groups</Text>
+            <Text style={styles.sectionTitle}>{t('popularGroups')}</Text>
             <TouchableOpacity onPress={() => navigation.navigate('GroupSearchScreen')}>
-              <Text style={styles.seeAllText}>See All</Text>
+              <Text style={styles.seeAllText}>{t('seeAll')}</Text>
             </TouchableOpacity>
           </View>
           {communityGroups.slice(0, 3).map(renderGroupCard)}
@@ -291,9 +293,9 @@ const CommunityScreen = () => {
         {/* Recent Posts */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Recent Posts</Text>
+            <Text style={styles.sectionTitle}>{t('recentPosts')}</Text>
             <TouchableOpacity onPress={() => navigation.navigate('CreatePostScreen', { groupId: '1' })}>
-              <Text style={styles.seeAllText}>Create Post</Text>
+              <Text style={styles.seeAllText}>{t('createPost')}</Text>
             </TouchableOpacity>
           </View>
           {recentPosts.map(renderPostCard)}
@@ -309,7 +311,7 @@ const CommunityScreen = () => {
             style={styles.createPostGradient}
           >
             <Ionicons name="add" size={24} color="white" />
-            <Text style={styles.createPostText}>Create New Post</Text>
+            <Text style={styles.createPostText}>{t('createNewPost')}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </ScrollView>
