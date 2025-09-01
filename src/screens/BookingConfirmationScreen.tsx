@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ConsultantStackParamList } from '../navigation/types';
+import { supabase } from '../services/supabase';
 
 type Nav = NativeStackNavigationProp<ConsultantStackParamList, 'BookingConfirmation'>;
 type Rt = RouteProp<ConsultantStackParamList, 'BookingConfirmation'>;
@@ -14,6 +15,22 @@ const BookingConfirmationScreen = () => {
   const navigation = useNavigation<Nav>();
   const route = useRoute<Rt>();
   const { bookingId, consultantId, mode, date, slot, amount, paymentMethod } = route.params;
+
+  const persistBooking = async () => {
+    try {
+      await supabase.from('bookings').insert({
+        id: bookingId,
+        consultant_id: consultantId,
+        mode,
+        date,
+        slot,
+        amount,
+        payment_method: paymentMethod,
+      });
+    } catch {}
+  };
+
+  persistBooking();
 
   return (
     <SafeAreaView style={styles.container}>
