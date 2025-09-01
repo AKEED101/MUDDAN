@@ -7,11 +7,11 @@ import AuthStack from './src/navigation/AuthStack';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 
 const AppContent = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, needsOnboarding } = useAuth();
   return (
     <NavigationContainer linking={{ prefixes: ['app://'] }}>
       <StatusBar style="auto" />
-      {loading ? null : user ? <RootNavigator /> : <AuthStack />}
+      {loading ? null : user ? (needsOnboarding ? <AuthStack /> : <RootNavigator />) : <AuthStack />}
     </NavigationContainer>
   );
 };

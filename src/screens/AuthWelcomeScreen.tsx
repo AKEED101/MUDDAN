@@ -22,6 +22,10 @@ const AuthWelcomeScreen = () => {
           <Ionicons name="call" size={18} color="#7C3AED" />
           <Text style={styles.actionText}>Continue with Phone</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.action} onPress={() => navigation.navigate('ProfileOnboarding')}>
+          <Ionicons name="person" size={18} color="#7C3AED" />
+          <Text style={styles.actionText}>Set up Profile</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
