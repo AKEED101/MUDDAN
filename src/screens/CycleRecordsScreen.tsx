@@ -10,9 +10,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { useI18n } from '../i18n';
 
 const CycleRecordsScreen = () => {
   const navigation = useNavigation();
+  const { t } = useI18n();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,7 +28,7 @@ const CycleRecordsScreen = () => {
         >
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Cycle Records</Text>
+        <Text style={styles.headerTitle}>{t('recordsHistory')}</Text>
         <TouchableOpacity style={styles.filterButton}>
           <Ionicons name="filter" size={24} color="white" />
         </TouchableOpacity>
@@ -53,7 +55,7 @@ const CycleRecordsScreen = () => {
 
         <View style={styles.recordsCard}>
           <Text style={styles.sectionTitle}>Recent Records</Text>
-          <Text style={styles.placeholderText}>No records found</Text>
+          <Text style={styles.placeholderText}>{t('noLogs')}</Text>
         </View>
 
         <View style={styles.exportCard}>
@@ -64,7 +66,7 @@ const CycleRecordsScreen = () => {
               style={styles.exportButtonGradient}
             >
               <Ionicons name="download" size={20} color="white" />
-              <Text style={styles.exportButtonText}>Export to PDF</Text>
+              <Text style={styles.exportButtonText}>{t('exportToPDF')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>

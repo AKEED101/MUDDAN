@@ -6,20 +6,22 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CycleStackParamList } from '../navigation/types';
+import { useI18n } from '../i18n';
 
 type CalendarScreenNavigationProp = NativeStackNavigationProp<CycleStackParamList, 'CalendarScreen'>;
 
 const CalendarScreen = () => {
   const navigation = useNavigation<CalendarScreenNavigationProp>();
+  const { t } = useI18n();
 
   const handleSettings = () => {
     Alert.alert(
-      'Calendar Settings',
+      t('calendarSettings'),
       'Customize your calendar view, notifications, and privacy settings.',
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Settings', onPress: () => {
-          Alert.alert('Settings', 'Calendar settings functionality coming soon!');
+          Alert.alert('Settings', t('comingSoon'));
         }}
       ]
     );
@@ -31,7 +33,7 @@ const CalendarScreen = () => {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Calendar</Text>
+        <Text style={styles.headerTitle}>{t('calendar')}</Text>
         <TouchableOpacity style={styles.settingsButton} onPress={handleSettings}>
           <Ionicons name="settings-outline" size={24} color="white" />
         </TouchableOpacity>
@@ -39,8 +41,8 @@ const CalendarScreen = () => {
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.calendarCard}>
-          <Text style={styles.sectionTitle}>Calendar View</Text>
-          <Text style={styles.placeholderText}>Calendar functionality coming soon!</Text>
+          <Text style={styles.sectionTitle}>{t('calendarView')}</Text>
+          <Text style={styles.placeholderText}>{t('comingSoon')}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

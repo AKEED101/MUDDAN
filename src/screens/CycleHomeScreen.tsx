@@ -15,11 +15,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CycleStackParamList } from '../navigation/types';
 import { computeCycleState, Cycle } from '../utils/cycle';
 import { markPeriodEndToday } from '../services/cycles';
+import { useI18n } from '../i18n';
 
 type CycleHomeScreenNavigationProp = NativeStackNavigationProp<CycleStackParamList, 'CycleHomeScreen'>;
 
 const CycleHomeScreen = () => {
   const navigation = useNavigation<CycleHomeScreenNavigationProp>();
+  const { t } = useI18n();
   
   // Mock data for demonstration - in real app this would come from Firestore
   const [cycles, setCycles] = useState<Cycle[]>([
@@ -88,14 +90,14 @@ const CycleHomeScreen = () => {
         colors={['#7C3AED', '#A855F7']}
         style={styles.header}
       >
-        <Text style={styles.headerTitle}>Cycle Tracker</Text>
-        <Text style={styles.headerSubtitle}>Track your health journey</Text>
+        <Text style={styles.headerTitle}>{t('cycleTracker')}</Text>
+        <Text style={styles.headerSubtitle}>{t('trackJourney')}</Text>
       </LinearGradient>
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Current Cycle Card with Live Countdowns */}
         <View style={styles.currentCycleCard}>
-          <Text style={styles.sectionTitle}>Current Cycle</Text>
+          <Text style={styles.sectionTitle}>{t('currentCycle')}</Text>
           {state ? (
             <>
               <Text style={styles.dayOfCycle}>
@@ -116,9 +118,7 @@ const CycleHomeScreen = () => {
               ) : (
                 <View style={styles.statusChip}>
                   <Ionicons name="calendar" size={16} color="#7C3AED" />
-                  <Text style={styles.statusText}>
-                    {`${Math.max(state.dToNextStart, 0)} day${Math.max(state.dToNextStart, 0) === 1 ? '' : 's'} to next period`}
-                  </Text>
+                  <Text style={styles.statusText}>{`${Math.max(state.dToNextStart, 0)} day${Math.max(state.dToNextStart, 0) === 1 ? '' : 's'} to ${t('nextPeriod').toLowerCase()}`}</Text>
                 </View>
               )}
 
@@ -145,13 +145,13 @@ const CycleHomeScreen = () => {
               )}
             </>
           ) : (
-            <Text style={styles.noDataText}>Log your first period to start live tracking.</Text>
+            <Text style={styles.noDataText}>{t('logPeriod')} to start live tracking.</Text>
           )}
         </View>
 
         {/* Quick Actions */}
         <View style={styles.quickActionsCard}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>{t('quickActions')}</Text>
           <View style={styles.actionButtons}>
             <TouchableOpacity 
               style={styles.actionButton} 
@@ -162,7 +162,7 @@ const CycleHomeScreen = () => {
                 style={styles.actionButtonGradient}
               >
                 <Ionicons name="calendar" size={24} color="white" />
-                <Text style={styles.actionButtonText}>Calendar</Text>
+                <Text style={styles.actionButtonText}>{t('calendar')}</Text>
               </LinearGradient>
             </TouchableOpacity>
             
@@ -175,7 +175,7 @@ const CycleHomeScreen = () => {
                 style={styles.actionButtonGradient}
               >
                 <Ionicons name="analytics" size={24} color="white" />
-                <Text style={styles.actionButtonText}>Insights</Text>
+                <Text style={styles.actionButtonText}>{t('insightsTitle')}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -183,13 +183,13 @@ const CycleHomeScreen = () => {
 
         {/* Features */}
         <View style={styles.featuresCard}>
-          <Text style={styles.sectionTitle}>Features</Text>
+          <Text style={styles.sectionTitle}>{t('features')}</Text>
           <TouchableOpacity 
             style={styles.featureItem}
             onPress={() => handleNavigateTo('CycleTrackerScreen')}
           >
             <Ionicons name="pulse" size={24} color="#7C3AED" />
-            <Text style={styles.featureText}>Cycle Tracking</Text>
+            <Text style={styles.featureText}>{t('cycleTracking')}</Text>
             <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
           </TouchableOpacity>
           
@@ -198,7 +198,7 @@ const CycleHomeScreen = () => {
             onPress={() => handleNavigateTo('CycleNotesScreen')}
           >
             <Ionicons name="document-text" size={24} color="#7C3AED" />
-            <Text style={styles.featureText}>Cycle Notes</Text>
+            <Text style={styles.featureText}>{t('cycleNotes')}</Text>
             <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
           </TouchableOpacity>
           
@@ -207,7 +207,7 @@ const CycleHomeScreen = () => {
             onPress={() => handleNavigateTo('CycleRecordsScreen')}
           >
             <Ionicons name="stats-chart" size={24} color="#7C3AED" />
-            <Text style={styles.featureText}>Records & History</Text>
+            <Text style={styles.featureText}>{t('recordsHistory')}</Text>
             <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
           </TouchableOpacity>
           
@@ -216,7 +216,7 @@ const CycleHomeScreen = () => {
             onPress={() => handleNavigateTo('LogPeriodScreen')}
           >
             <Ionicons name="water" size={24} color="#7C3AED" />
-            <Text style={styles.featureText}>Log Period</Text>
+            <Text style={styles.featureText}>{t('logPeriod')}</Text>
             <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
           </TouchableOpacity>
         </View>

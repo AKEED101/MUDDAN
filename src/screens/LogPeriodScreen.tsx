@@ -11,11 +11,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useI18n } from '../i18n';
 import { useNavigation } from '@react-navigation/native';
 import { addCycleNote } from '../services/cycleNotes';
 
 const LogPeriodScreen = () => {
   const navigation = useNavigation();
+  const { t } = useI18n();
   const [flowIntensity, setFlowIntensity] = useState('medium');
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [notes, setNotes] = useState('');
@@ -50,9 +52,9 @@ const LogPeriodScreen = () => {
   };
 
   const flowOptions = [
-    { key: 'light', label: 'Light', color: '#FEE2E2' },
-    { key: 'medium', label: 'Medium', color: '#FCA5A5' },
-    { key: 'heavy', label: 'Heavy', color: '#EF4444' },
+    { key: 'light', label: t('light'), color: '#FEE2E2' },
+    { key: 'medium', label: t('medium'), color: '#FCA5A5' },
+    { key: 'heavy', label: t('heavy'), color: '#EF4444' },
   ];
 
   const symptomOptions = [
@@ -72,7 +74,7 @@ const LogPeriodScreen = () => {
         >
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Log Period</Text>
+        <Text style={styles.headerTitle}>{t('logPeriod')}</Text>
         <TouchableOpacity style={styles.saveButton} onPress={handleSavePeriod}>
           <Ionicons name="checkmark" size={24} color="white" />
         </TouchableOpacity>
@@ -80,7 +82,7 @@ const LogPeriodScreen = () => {
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.flowCard}>
-          <Text style={styles.sectionTitle}>Flow Intensity</Text>
+          <Text style={styles.sectionTitle}>{t('flowIntensity')}</Text>
           <View style={styles.flowOptions}>
             {flowOptions.map((option) => (
               <TouchableOpacity
@@ -104,7 +106,7 @@ const LogPeriodScreen = () => {
         </View>
 
         <View style={styles.symptomsCard}>
-          <Text style={styles.sectionTitle}>Symptoms</Text>
+          <Text style={styles.sectionTitle}>{t('symptoms')}</Text>
           <View style={styles.symptomsGrid}>
             {symptomOptions.map((symptom) => (
               <TouchableOpacity
@@ -127,7 +129,7 @@ const LogPeriodScreen = () => {
         </View>
 
         <View style={styles.notesCard}>
-          <Text style={styles.sectionTitle}>Additional Notes</Text>
+          <Text style={styles.sectionTitle}>{t('additionalNotes')}</Text>
           <Text style={styles.notesDescription}>
             These notes will be saved to your Cycle Notes and can be viewed later
           </Text>

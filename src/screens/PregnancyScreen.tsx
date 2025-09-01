@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useI18n } from '../i18n';
 
 const { width } = Dimensions.get('window');
 
@@ -18,6 +19,7 @@ interface PregnancyScreenProps {
 }
 
 const PregnancyScreen: React.FC<PregnancyScreenProps> = ({ navigation }) => {
+  const { t } = useI18n();
   const [selectedWeek, setSelectedWeek] = useState('week12');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
@@ -27,35 +29,35 @@ const PregnancyScreen: React.FC<PregnancyScreenProps> = ({ navigation }) => {
   const pregnancyFeatures = [
     {
       id: 'week-overview',
-      title: 'Week Overview',
+      title: t('weekOverview'),
       description: 'See your baby\'s development and your body changes',
       icon: 'calendar',
       gradient: ['#EC4899', '#F472B6'] as const,
-      action: 'View Week',
+      action: t('viewWeek'),
     },
     {
       id: 'baby-development',
-      title: 'Baby Development',
+      title: t('babyDevelopment'),
       description: 'Learn about your baby\'s size and milestones',
       icon: 'heart',
       gradient: ['#8B5CF6', '#A78BFA'] as const,
-      action: 'Learn More',
+      action: t('learnMore'),
     },
     {
       id: 'health-tips',
-      title: 'Health Tips',
+      title: t('healthTips'),
       description: 'Get personalized nutrition and exercise advice',
       icon: 'medical',
       gradient: ['#06B6D4', '#22D3EE'] as const,
-      action: 'Get Tips',
+      action: t('getTips'),
     },
     {
       id: 'appointments',
-      title: 'Appointments',
+      title: t('appointments'),
       description: 'Schedule and track prenatal appointments',
       icon: 'calendar-outline',
       gradient: ['#10B981', '#34D399'] as const,
-      action: 'Schedule',
+      action: t('schedule'),
     },
   ];
 
@@ -179,27 +181,27 @@ const PregnancyScreen: React.FC<PregnancyScreenProps> = ({ navigation }) => {
 
          {/* Current Week Status */}
          <View style={styles.weekStatusSection}>
-           <Text style={styles.sectionTitle}>Week {currentWeek.week}</Text>
+           <Text style={styles.sectionTitle}>{t('week')} {currentWeek.week}</Text>
           <View style={styles.weekStatusCard}>
             <LinearGradient
               colors={['rgba(255,255,255,0.95)', 'rgba(255,255,255,0.85)']}
               style={styles.weekStatusGradient}
             >
               <View style={styles.weekHeader}>
-                <Text style={styles.weekNumber}>Week {currentWeek.week}</Text>
+                <Text style={styles.weekNumber}>{t('week')} {currentWeek.week}</Text>
                 <Text style={styles.trimester}>{currentWeek.trimester}</Text>
               </View>
               <View style={styles.babyInfoRow}>
                 <View style={styles.babyInfo}>
-                  <Text style={styles.babySizeLabel}>Baby Size</Text>
+                  <Text style={styles.babySizeLabel}>{t('babySize')}</Text>
                   <Text style={styles.babySize}>{currentWeek.babySize}</Text>
                 </View>
                 <View style={styles.babyInfo}>
-                  <Text style={styles.babyLengthLabel}>Length</Text>
+                  <Text style={styles.babyLengthLabel}>{t('length')}</Text>
                   <Text style={styles.babyLength}>{currentWeek.babyLength}</Text>
                 </View>
                 <View style={styles.babyInfo}>
-                  <Text style={styles.babyWeightLabel}>Weight</Text>
+                  <Text style={styles.babyWeightLabel}>{t('weight')}</Text>
                   <Text style={styles.babyWeight}>{currentWeek.babyWeight}</Text>
                 </View>
               </View>

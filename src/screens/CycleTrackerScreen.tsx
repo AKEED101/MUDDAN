@@ -13,11 +13,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CycleStackParamList } from '../navigation/types';
+import { useI18n } from '../i18n';
 
 type CycleTrackerScreenNavigationProp = NativeStackNavigationProp<CycleStackParamList, 'CycleTrackerScreen'>;
 
 const CycleTrackerScreen = () => {
   const navigation = useNavigation<CycleTrackerScreenNavigationProp>();
+  const { t } = useI18n();
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleDateSelect = (date: Date) => {
@@ -52,7 +54,7 @@ const CycleTrackerScreen = () => {
         >
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Cycle Tracker</Text>
+        <Text style={styles.headerTitle}>{t('cycleTracker')}</Text>
         <TouchableOpacity style={styles.settingsButton} onPress={handleSettings}>
           <Ionicons name="settings-outline" size={24} color="white" />
         </TouchableOpacity>
@@ -61,7 +63,7 @@ const CycleTrackerScreen = () => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Current Cycle Info */}
         <View style={styles.cycleInfoCard}>
-          <Text style={styles.cycleInfoTitle}>Current Cycle</Text>
+          <Text style={styles.cycleInfoTitle}>{t('currentCycle')}</Text>
           <View style={styles.cycleStats}>
             <View style={styles.cycleStat}>
               <Text style={styles.cycleStatNumber}>28</Text>
@@ -84,7 +86,7 @@ const CycleTrackerScreen = () => {
 
         {/* Quick Actions */}
         <View style={styles.quickActionsCard}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>{t('quickActions')}</Text>
           <View style={styles.actionButtons}>
             <TouchableOpacity style={styles.actionButton} onPress={handleLogFlow}>
               <LinearGradient
@@ -92,7 +94,7 @@ const CycleTrackerScreen = () => {
                 style={styles.actionButtonGradient}
               >
                 <Ionicons name="water" size={24} color="white" />
-                <Text style={styles.actionButtonText}>Log Period</Text>
+                <Text style={styles.actionButtonText}>{t('logPeriod')}</Text>
               </LinearGradient>
             </TouchableOpacity>
             
@@ -102,7 +104,7 @@ const CycleTrackerScreen = () => {
                 style={styles.actionButtonGradient}
               >
                 <Ionicons name="document-text" size={24} color="white" />
-                <Text style={styles.actionButtonText}>Cycle Notes</Text>
+                <Text style={styles.actionButtonText}>{t('cycleNotes')}</Text>
               </LinearGradient>
             </TouchableOpacity>
             
@@ -120,7 +122,7 @@ const CycleTrackerScreen = () => {
 
         {/* Calendar Preview */}
         <View style={styles.calendarCard}>
-          <Text style={styles.sectionTitle}>This Month</Text>
+          <Text style={styles.sectionTitle}>{t('thisMonth')}</Text>
           <View style={styles.calendarGrid}>
             {/* Calendar days would go here */}
             <Text style={styles.calendarPlaceholder}>Calendar view coming soon!</Text>
@@ -129,17 +131,17 @@ const CycleTrackerScreen = () => {
 
         {/* Predictions */}
         <View style={styles.predictionsCard}>
-          <Text style={styles.sectionTitle}>Predictions</Text>
+          <Text style={styles.sectionTitle}>{t('predictions')}</Text>
           <View style={styles.predictionItem}>
             <Ionicons name="calendar" size={20} color="#7C3AED" />
-            <Text style={styles.predictionText}>Next period: 3 days</Text>
+            <Text style={styles.predictionText}>{t('nextPeriod')}: 3 days</Text>
           </View>
         </View>
 
         {/* Recent Logs */}
         <View style={styles.recentLogsCard}>
-          <Text style={styles.sectionTitle}>Recent Logs</Text>
-          <Text style={styles.placeholderText}>No recent logs yet</Text>
+          <Text style={styles.sectionTitle}>{t('recentLogs')}</Text>
+          <Text style={styles.placeholderText}>{t('noLogs')}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

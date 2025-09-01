@@ -12,9 +12,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { useI18n } from '../i18n';
 
 const CycleNotesScreen = () => {
   const navigation = useNavigation();
+  const { t } = useI18n();
   const [note, setNote] = useState('');
 
   // Mock data for demonstration - in real app this would come from storage
@@ -102,7 +104,7 @@ const CycleNotesScreen = () => {
         >
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Cycle Notes</Text>
+        <Text style={styles.headerTitle}>{t('cycleNotes')}</Text>
         <TouchableOpacity style={styles.saveButton} onPress={handleSaveNote}>
           <Ionicons name="checkmark" size={24} color="white" />
         </TouchableOpacity>
@@ -110,7 +112,7 @@ const CycleNotesScreen = () => {
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.noteInputCard}>
-          <Text style={styles.sectionTitle}>Add New Note</Text>
+          <Text style={styles.sectionTitle}>{t('addNewNote')}</Text>
           <TextInput
             style={styles.noteInput}
             placeholder="How are you feeling today? Any symptoms or observations?"
@@ -123,7 +125,7 @@ const CycleNotesScreen = () => {
         </View>
 
         <View style={styles.quickNotesCard}>
-          <Text style={styles.sectionTitle}>Quick Notes</Text>
+          <Text style={styles.sectionTitle}>{t('quickNotes')}</Text>
           <View style={styles.quickNoteButtons}>
             <TouchableOpacity style={styles.quickNoteButton}>
               <Text style={styles.quickNoteText}>Feeling tired</Text>
@@ -141,7 +143,7 @@ const CycleNotesScreen = () => {
         </View>
 
         <View style={styles.allNotesCard}>
-          <Text style={styles.sectionTitle}>All Notes</Text>
+          <Text style={styles.sectionTitle}>{t('allNotes')}</Text>
           {allNotes.length > 0 ? (
             allNotes.map((noteItem) => (
               <View key={noteItem.id} style={styles.noteItem}>
@@ -160,7 +162,7 @@ const CycleNotesScreen = () => {
               </View>
             ))
           ) : (
-            <Text style={styles.placeholderText}>No notes yet</Text>
+            <Text style={styles.placeholderText}>{t('noNotes')}</Text>
           )}
         </View>
       </ScrollView>

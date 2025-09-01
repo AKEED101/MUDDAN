@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CycleStackParamList } from '../navigation/types';
+import { useI18n } from '../i18n';
 import OverflowMenu from '../components/OverflowMenu';
 import ChartCard from '../components/ChartCard';
 import * as Print from 'expo-print';
@@ -23,6 +24,7 @@ type InsightsScreenNavigationProp = NativeStackNavigationProp<CycleStackParamLis
 
 const InsightsScreen = () => {
   const navigation = useNavigation<InsightsScreenNavigationProp>();
+  const { t } = useI18n();
 
   // Mock data for charts
   const cycleLengthData = [
@@ -186,7 +188,7 @@ const InsightsScreen = () => {
         >
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Insights</Text>
+        <Text style={styles.headerTitle}>{t('insightsTitle')}</Text>
         <OverflowMenu
           onExportPDF={handleExportPDF}
           onShareSummary={handleShareSummary}
@@ -197,7 +199,7 @@ const InsightsScreen = () => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Summary Note Card */}
         <View style={styles.summaryCard}>
-          <Text style={styles.sectionTitle}>Summary Note</Text>
+          <Text style={styles.sectionTitle}>{t('summaryNote')}</Text>
           <View style={styles.summaryContent}>
             <Ionicons name="bulb" size={20} color="#F59E0B" />
             <Text style={styles.summaryText}>
@@ -251,17 +253,17 @@ const InsightsScreen = () => {
 
         {/* Predictions */}
         <View style={styles.predictionsCard}>
-          <Text style={styles.sectionTitle}>Predictions</Text>
+          <Text style={styles.sectionTitle}>{t('predictions')}</Text>
           <View style={styles.predictionItem}>
             <Ionicons name="calendar" size={20} color="#7C3AED" />
-            <Text style={styles.predictionText}>Next period: 3 days</Text>
+            <Text style={styles.predictionText}>{t('nextPeriod')}: 3 days</Text>
           </View>
         </View>
 
         {/* Trends */}
         <View style={styles.trendsCard}>
           <Text style={styles.sectionTitle}>Trends</Text>
-          <Text style={styles.placeholderText}>Trend analysis coming soon!</Text>
+          <Text style={styles.placeholderText}>{t('comingSoon')}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
