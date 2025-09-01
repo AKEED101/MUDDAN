@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +14,13 @@ const ChatScreen = () => {
   const navigation = useNavigation<ChatScreenNavigationProp>();
   const route = useRoute<ChatScreenRouteProp>();
   const { consultationId } = route.params;
+  const [message, setMessage] = useState('');
+  const [attachments, setAttachments] = useState<string[]>([]);
+
+  const handleAttachSample = () => {
+    // Attach a sample asset to simulate file upload without extra deps
+    setAttachments(prev => [...prev, 'assets/icon.png']);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,14 +36,24 @@ const ChatScreen = () => {
         <View style={styles.chatCard}>
           <Text style={styles.chatTitle}>Chat Session {consultationId}</Text>
           <Text style={styles.chatContent}>Attach files and send messages.</Text>
+          {attachments.length > 0 && (
+            <View style={styles.attachmentsRow}>
+              {attachments.map((a, idx) => (
+                <View key={idx} style={styles.attachmentChip}>
+                  <Ionicons name="document-attach" size={16} color="#7C3AED" />
+                  <Text style={styles.attachmentText}>{a.split('/').pop()}</Text>
+                </View>
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
 
       <View style={styles.composer}>
-        <TouchableOpacity style={styles.attachBtn}>
+        <TouchableOpacity style={styles.attachBtn} onPress={handleAttachSample}>
           <Ionicons name="attach" size={20} color="#6B7280" />
         </TouchableOpacity>
-        <TextInput placeholder="Type a message" placeholderTextColor="#9CA3AF" style={styles.input} />
+        <TextInput value={message} onChangeText={setMessage} placeholder="Type a message" placeholderTextColor="#9CA3AF" style={styles.input} />
         <TouchableOpacity style={styles.sendBtn}>
           <Ionicons name="send" size={20} color="white" />
         </TouchableOpacity>
