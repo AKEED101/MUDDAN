@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { supabase } from '../services/supabase';
 
 type Lang = 'en' | 'so';
 
@@ -23,7 +24,25 @@ const I18nContext = createContext<I18nCtx>({ t: (k) => en[k], lang: 'en', setLan
 
 export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [lang, setLang] = useState<Lang>('en');
-  const value = useMemo(() => ({ lang, setLang, t: (k: keyof typeof en) => dict[lang][k] }), [lang]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const uid = data.user?.id;
+      if (!uid) return;
+      const { data: prof } = await supabase.from('user_profiles').select('language').eq('id', uid).maybeSingle();
+      if (prof?.language && (['en', 'so'] as Lang[]).includes(prof.language)) setLang(prof.language as Lang);
+    })();
+  }, []);
+
+  const saveLang = async (l: Lang) => {
+    setLang(l);
+    const { data } = await supabase.auth.getUser();
+    const uid = data.user?.id;
+    if (uid) await supabase.from('user_profiles').update({ language: l }).eq('id', uid);
+  };
+
+  const value = useMemo(() => ({ lang, setLang: saveLang, t: (k: keyof typeof en) => dict[lang][k] }), [lang]);
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 };
 

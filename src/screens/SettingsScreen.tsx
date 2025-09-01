@@ -6,11 +6,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigation/types';
+import { useI18n } from '../i18n';
 
 type SettingsScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'SettingsScreen'>;
 
 const SettingsScreen = () => {
   const navigation = useNavigation<SettingsScreenNavigationProp>();
+  const { lang, setLang } = useI18n();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,8 +26,15 @@ const SettingsScreen = () => {
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.settingsCard}>
-          <Text style={styles.settingsTitle}>Settings</Text>
-          <Text style={styles.settingsContent}>Settings functionality coming soon!</Text>
+          <Text style={styles.settingsTitle}>Language</Text>
+          <View style={styles.langRow}>
+            <TouchableOpacity style={[styles.langChip, lang === 'en' && styles.langChipActive]} onPress={() => setLang('en')}>
+              <Text style={[styles.langText, lang === 'en' && styles.langTextActive]}>English</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.langChip, lang === 'so' && styles.langChipActive]} onPress={() => setLang('so')}>
+              <Text style={[styles.langText, lang === 'so' && styles.langTextActive]}>Somali</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -76,11 +85,11 @@ const styles = StyleSheet.create({
     color: '#1E293B',
     marginBottom: 16,
   },
-  settingsContent: {
-    fontSize: 16,
-    color: '#6B7280',
-    lineHeight: 24,
-  },
+  langRow: { flexDirection: 'row', gap: 12 },
+  langChip: { backgroundColor: '#F3F4F6', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 12 },
+  langChipActive: { backgroundColor: '#7C3AED' },
+  langText: { color: '#374151', fontWeight: '700' },
+  langTextActive: { color: 'white' },
 });
 
 export default SettingsScreen;
