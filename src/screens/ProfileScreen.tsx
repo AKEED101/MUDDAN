@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigation/types';
+import { useI18n } from '../i18n';
 
 const { width } = Dimensions.get('window');
 
@@ -13,6 +14,7 @@ type ProfileScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamLi
 
 const ProfileScreen: React.FC = () => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
+  const { t } = useI18n();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
 
@@ -186,7 +188,7 @@ const ProfileScreen: React.FC = () => {
 
         {/* Quick Actions */}
         <View style={styles.quickActionsSection}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>{t('quickActions')}</Text>
           <View style={styles.quickActionsGrid}>
             <TouchableOpacity style={styles.quickActionCard}>
               <LinearGradient
@@ -194,7 +196,7 @@ const ProfileScreen: React.FC = () => {
                 style={styles.quickActionGradient}
               >
                 <Ionicons name="add" size={24} color="white" />
-                <Text style={styles.quickActionText}>Book Consultation</Text>
+                <Text style={styles.quickActionText}>{t('bookAppointment')}</Text>
               </LinearGradient>
             </TouchableOpacity>
             <TouchableOpacity style={styles.quickActionCard}>
@@ -203,7 +205,7 @@ const ProfileScreen: React.FC = () => {
                 style={styles.quickActionGradient}
               >
                 <Ionicons name="calendar" size={24} color="white" />
-                <Text style={styles.quickActionText}>Track Cycle</Text>
+                <Text style={styles.quickActionText}>{t('cycleTracker')}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -242,7 +244,7 @@ const ProfileScreen: React.FC = () => {
 
         {/* Settings */}
         <View style={styles.settingsSection}>
-          <Text style={styles.sectionTitle}>Settings</Text>
+          <Text style={styles.sectionTitle}>{t('settings')}</Text>
           <View style={styles.settingsCard}>
             <View style={styles.settingRow}>
               <View style={styles.settingLeft}>
