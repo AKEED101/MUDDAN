@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +14,23 @@ const MyConsultationsScreen = () => {
   const navigation = useNavigation<MyConsultationsScreenNavigationProp>();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [rescheduleForId, setRescheduleForId] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedSlot, setSelectedSlot] = useState<string>('');
+
+  const next7Days = useMemo(() => {
+    const days: { key: string; label: string }[] = [];
+    const now = new Date();
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(now);
+      d.setDate(now.getDate() + i);
+      const key = d.toISOString().slice(0, 10);
+      const label = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+      days.push({ key, label });
+    }
+    return days;
+  }, []);
+  const slots = useMemo(() => ['09:00', '10:30', '13:00', '15:00', '17:30'], []);
 
   useEffect(() => {
     (async () => {
@@ -29,6 +46,28 @@ const MyConsultationsScreen = () => {
       setLoading(false);
     })();
   }, []);
+
+  const handleCancel = async (id: string) => {
+    await supabase.from('booking_requests').update({ status: 'cancelled' }).eq('id', id);
+    setItems(prev => prev.map(it => (it.id === id ? { ...it, status: 'cancelled' } : it)));
+  };
+
+  const openReschedule = (id: string) => {
+    const b = items.find(x => x.id === id);
+    setSelectedDate(b?.date_iso || '');
+    setSelectedSlot(b?.slot || '');
+    setRescheduleForId(id);
+  };
+
+  const saveReschedule = async () => {
+    if (!rescheduleForId || !selectedDate || !selectedSlot) return;
+    await supabase
+      .from('booking_requests')
+      .update({ date_iso: selectedDate, slot: selectedSlot, status: 'pending' })
+      .eq('id', rescheduleForId);
+    setItems(prev => prev.map(it => (it.id === rescheduleForId ? { ...it, date_iso: selectedDate, slot: selectedSlot, status: 'pending' } : it)));
+    setRescheduleForId(null);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +91,7 @@ const MyConsultationsScreen = () => {
               <View key={bk.id} style={styles.itemRow}>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.itemTitle}>{(bk.consultation_type || '').toUpperCase()} • {bk.date_iso} {bk.slot}</Text>
-                  <Text style={styles.itemSub}>Consultant: {bk.consultant_code} • ${bk.amount} • {bk.payment_method}</Text>
+                  <Text style={styles.itemSub}>Consultant: {bk.consultant_code} • ${bk.amount} • {bk.payment_method} • {bk.status}</Text>
                 </View>
                 <View style={styles.actionsRow}>
                   <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Chat', { consultationId: bk.id })}>
@@ -64,12 +103,48 @@ const MyConsultationsScreen = () => {
                   <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('VideoCall', { consultationId: bk.id })}>
                     <Ionicons name="videocam" size={16} color="#7C3AED" />
                   </TouchableOpacity>
+                  <TouchableOpacity style={[styles.actionBtn, styles.cancelBtn]} onPress={() => handleCancel(bk.id)}>
+                    <Ionicons name="close" size={16} color="#EF4444" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.actionBtn, styles.rescheduleBtn]} onPress={() => openReschedule(bk.id)}>
+                    <Ionicons name="calendar" size={16} color="#7C3AED" />
+                  </TouchableOpacity>
                 </View>
               </View>
             ))
           )}
         </View>
       </ScrollView>
+
+      {rescheduleForId && (
+        <View style={styles.reschedulePanel}>
+          <Text style={styles.panelTitle}>Reschedule</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.datesRow}>
+              {next7Days.map(d => (
+                <TouchableOpacity key={d.key} style={[styles.dateChip, selectedDate === d.key && styles.dateChipActive]} onPress={() => setSelectedDate(d.key)}>
+                  <Text style={[styles.dateText, selectedDate === d.key && styles.dateTextActive]}>{d.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
+          <View style={styles.slotsRow}>
+            {slots.map(s => (
+              <TouchableOpacity key={s} style={[styles.slotChip, selectedSlot === s && styles.slotChipActive]} onPress={() => setSelectedSlot(s)}>
+                <Text style={[styles.slotText, selectedSlot === s && styles.slotTextActive]}>{s}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={styles.panelActions}>
+            <TouchableOpacity style={[styles.panelBtn, styles.panelCancel]} onPress={() => setRescheduleForId(null)}>
+              <Text style={styles.panelCancelText}>Dismiss</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.panelBtn, styles.panelSave]} disabled={!(selectedDate && selectedSlot)} onPress={saveReschedule}>
+              <Text style={styles.panelSaveText}>Save</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -135,6 +210,40 @@ const styles = StyleSheet.create({
   itemSub: { color: '#6B7280', marginTop: 2 },
   actionsRow: { flexDirection: 'row', gap: 8 },
   actionBtn: { backgroundColor: '#F3E8FF', padding: 8, borderRadius: 8 },
+  cancelBtn: { backgroundColor: '#FEE2E2' },
+  rescheduleBtn: {},
+  reschedulePanel: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  panelTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 12 },
+  datesRow: { flexDirection: 'row', gap: 12 },
+  dateChip: { paddingHorizontal: 12, paddingVertical: 10, borderRadius: 12, backgroundColor: '#F3F4F6' },
+  dateChipActive: { backgroundColor: '#7C3AED' },
+  dateText: { color: '#374151', fontWeight: '600' },
+  dateTextActive: { color: 'white' },
+  slotsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 12 },
+  slotChip: { paddingHorizontal: 12, paddingVertical: 10, borderRadius: 12, backgroundColor: '#F3F4F6' },
+  slotChipActive: { backgroundColor: '#7C3AED' },
+  slotText: { color: '#374151', fontWeight: '600' },
+  slotTextActive: { color: 'white' },
+  panelActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 12, marginTop: 16 },
+  panelBtn: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: 10 },
+  panelCancel: { backgroundColor: '#F3F4F6' },
+  panelSave: { backgroundColor: '#7C3AED' },
+  panelCancelText: { color: '#111827', fontWeight: '700' },
+  panelSaveText: { color: 'white', fontWeight: '700' },
 });
 
 export default MyConsultationsScreen;

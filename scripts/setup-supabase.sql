@@ -361,6 +361,9 @@ CREATE POLICY "Users can view own booking requests" ON booking_requests
 CREATE POLICY "Users can create booking requests" ON booking_requests
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+CREATE POLICY "Users can update own booking requests" ON booking_requests
+  FOR UPDATE USING (auth.uid() = user_id);
+
 -- =====================================================
 -- 8. TRIGGERS FOR AUTOMATIC UPDATES
 -- =====================================================
